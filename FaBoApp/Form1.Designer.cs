@@ -33,6 +33,7 @@
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.listViewPosts = new System.Windows.Forms.ListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.SuspendLayout();
 			// 
 			// btnStart
@@ -71,11 +72,16 @@
 			// 
 			// listViewPosts
 			// 
+			this.listViewPosts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+			this.listViewPosts.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
 			this.listViewPosts.Location = new System.Drawing.Point(15, 33);
 			this.listViewPosts.Name = "listViewPosts";
 			this.listViewPosts.Size = new System.Drawing.Size(280, 316);
 			this.listViewPosts.TabIndex = 4;
 			this.listViewPosts.UseCompatibleStateImageBehavior = false;
+			this.listViewPosts.View = System.Windows.Forms.View.Details;
+			this.listViewPosts.Resize += new System.EventHandler(this.listViewPosts_Resize);
 			// 
 			// Form1
 			// 
@@ -100,6 +106,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ListView listViewPosts;
+		private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 

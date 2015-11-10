@@ -12,7 +12,7 @@ using System.Text;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Facebook;
+
 namespace FaBoApp
 {
 	public partial class Form1 : Form
@@ -24,10 +24,37 @@ namespace FaBoApp
 
 		private void button1_Click(object sender, EventArgs args)
 		{
-			List<string> postIds = FBUtils.GetFanpageFeed("haitacmobi");
-			foreach (var postId in postIds) {
-				listViewPosts.Items.Add(postId);
-			}
+            List<string> allPost = new List<string>();
+            List<string> postIds = new List<string>();
+            
+            int year_num         = 2012;
+            
+            while (year_num < 2017)
+            {
+                string start_year = year_num.ToString() + "-01-01";
+                string end_year   = (year_num + 1).ToString() + "-01-01";
+                postIds = FBUtils.GetFanpageFeed("haitacmobi", start_year, end_year);
+                
+                int offset_current = 0;
+                while (postIds.Count() != 0)
+                {
+                    allPost.AddRange(postIds);
+                    offset_current = offset_current + 100;
+                    postIds = FBUtils.GetFanpageFeed("haitacmobi", "2013-01-01", "2014-01-01", 100, offset_current);
+                }
+                
+                year_num = year_num + 1;
+            
+            }
+
+            int counter = 0;
+            foreach (var postId in allPost)
+            {
+                listViewPosts.Items.Add(postId);
+                counter++;
+            }
+            listViewPosts.Items.Add(counter.ToString());
+
 			/*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
 			string name_fanpage = textBox1.Text;
 			string info = FBUtils.GetFanpageInfo(name_fanpage);

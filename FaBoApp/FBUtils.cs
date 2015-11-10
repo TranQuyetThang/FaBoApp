@@ -18,12 +18,14 @@ namespace FaBoApp
 
 		private static string GetUserAccessToken(string appId, string appSecret)
 		{
-			if (!IsValidUserAccessToken(USER_TOKEN)) {
-				FacebookLoginForm form = new FacebookLoginForm(appId);
-				form.ShowDialog();
-				USER_TOKEN = form.UserAccessToken;			
-			}
-			return USER_TOKEN;
+            //if (!IsValidUserAccessToken(USER_TOKEN))
+            //{
+            //    FacebookLoginForm form = new FacebookLoginForm(appId);
+            //    form.ShowDialog();
+            //    USER_TOKEN = form.UserAccessToken;
+            //}
+
+            return USER_TOKEN = appId+"|"+appSecret;
 		}
 
 		private static bool IsValidUserAccessToken(string accessToken) {
@@ -58,15 +60,27 @@ namespace FaBoApp
 			return NetUtils.Get(url);
 		}
 
-		public static List<string> GetFanpageFeed(string fanpageName)
+        public static List<string> GetFanpageFeed(string fanpageName, string since_year = null, string until_year = null,int limit_num =100, int offset_num = 0)
 		{
-			List<string> feed = new List<string>();
+            List<string> feed = new List<string>();
 			string token = GetUserAccessToken(APP_ID, APP_SECRET);
-			string url = "https://graph.facebook.com/" + fanpageName + "/feed?access_token=" + token;
-			string result = NetUtils.Get(url);
-			var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
-			foreach (var post in json["data"]) {
-				feed.Add((string) post["id"]);
+            string url_page = "https://graph.facebook.com/" + fanpageName + "/feed";
+            // param of api
+            if (since_year != null)
+                url_page = url_page + "?since=" + since_year;
+            if (until_year != null)
+                url_page = url_page + "&until=" + until_year;
+            if (since_year == null && until_year == null)
+                url_page = url_page + "?limit=" + limit_num + "&offset=" + offset_num + "&access_token=" + token;
+            else
+                url_page = url_page + "&limit=" + limit_num + "&offset=" + offset_num + "&access_token=" + token;
+
+            string result = NetUtils.Get(url_page);
+
+            var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
+            foreach (var post in json["data"])
+            {
+                feed.Add((string)post["id"]);
 			}
 			return feed;
 		}

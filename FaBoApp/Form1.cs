@@ -12,6 +12,7 @@ using System.Text;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace FaBoApp
 {
@@ -33,18 +34,20 @@ namespace FaBoApp
             {
                 string start_year = year_num.ToString() + "-01-01";
                 string end_year   = (year_num + 1).ToString() + "-01-01";
-                postIds = FBUtils.GetFanpageFeed("haitacmobi", start_year, end_year);
+                Thread.Sleep(1000);
+                postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year);
                 
                 int offset_current = 0;
                 while (postIds.Count() != 0)
                 {
                     allPost.AddRange(postIds);
                     offset_current = offset_current + 100;
-                    postIds = FBUtils.GetFanpageFeed("haitacmobi", "2013-01-01", "2014-01-01", 100, offset_current);
+                    Thread.Sleep(1000);
+                    postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year, 100, offset_current);
                 }
                 
                 year_num = year_num + 1;
-            
+                
             }
 
             int counter = 0;

@@ -25,44 +25,44 @@ namespace FaBoApp
 
 		private void button1_Click(object sender, EventArgs args)
 		{
-            List<string> allPost = new List<string>();
-            List<string> postIds = new List<string>();
-            
-            int year_num         = 2012;
-            
-            while (year_num < 2017)
-            {
-                string start_year = year_num.ToString() + "-01-01";
-                string end_year   = (year_num + 1).ToString() + "-01-01";
-                Thread.Sleep(1000);
-                postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year);
-                
-                int offset_current = 0;
-                while (postIds.Count() != 0)
-                {
-                    allPost.AddRange(postIds);
-                    offset_current = offset_current + 100;
-                    Thread.Sleep(1000);
-                    postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year, 100, offset_current);
-                }
-                
-                year_num = year_num + 1;
-                
-            }
+			var thread = new Thread(() => {
+				List<string> allPost = new List<string>();
+				List<string> postIds = new List<string>();
 
-            int counter = 0;
-            foreach (var postId in allPost)
-            {
-                listViewPosts.Items.Add(postId);
-                counter++;
-            }
-            listViewPosts.Items.Add(counter.ToString());
+				int year_num = 2012;
 
-			/*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
-			string name_fanpage = textBox1.Text;
-			string info = FBUtils.GetFanpageInfo(name_fanpage);
-			dynamic jsonInfo = JsonConvert.DeserializeObject(info);
-			Console.WriteLine("jsonInfo = " + info);*/
+				while (year_num < 2017) {
+					string start_year = year_num.ToString() + "-01-01";
+					string end_year = (year_num + 1).ToString() + "-01-01";
+					Thread.Sleep(1000);
+					postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year);
+
+					int offset_current = 0;
+					while (postIds.Count() != 0) {
+						allPost.AddRange(postIds);
+						offset_current = offset_current + 100;
+						Thread.Sleep(1000);
+						postIds = FBUtils.GetFanpageFeed("beatvn.jsc", start_year, end_year, 100, offset_current);
+					}
+
+					year_num = year_num + 1;
+
+				}
+
+				int counter = 0;
+				foreach (var postId in allPost) {
+					this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postId);
+					counter++;
+				}
+				this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), counter.ToString());
+
+				/*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
+				string name_fanpage = textBox1.Text;
+				string info = FBUtils.GetFanpageInfo(name_fanpage);
+				dynamic jsonInfo = JsonConvert.DeserializeObject(info);
+				Console.WriteLine("jsonInfo = " + info);*/
+			});
+			thread.Start();
 		}
 
 		private void listViewPosts_Resize(object sender, EventArgs e)

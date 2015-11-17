@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace FaBoApp
 {
@@ -63,8 +65,8 @@ namespace FaBoApp
         public static List<string> GetFanpageFeed(string fanpageName, string since_year = null, string until_year = null,int limit_num =100, int offset_num = 0)
 		{
             List<string> feed = new List<string>();
-			string token = GetUserAccessToken(APP_ID, APP_SECRET);
-            string url_page = "https://graph.facebook.com/" + fanpageName + "/feed";
+			string token      = GetUserAccessToken(APP_ID, APP_SECRET);
+            string url_page   = "https://graph.facebook.com/" + fanpageName + "/feed";
             // param of api
             if (since_year != null)
                 url_page = url_page + "?since=" + since_year;
@@ -76,14 +78,43 @@ namespace FaBoApp
                 url_page = url_page + "&limit=" + limit_num + "&offset=" + offset_num + "&access_token=" + token;
 
             string result = NetUtils.Get(url_page);
-
-            var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
-            foreach (var post in json["data"])
+            if (!string.IsNullOrEmpty(result))
             {
-                feed.Add((string)post["id"]);
-			}
+                var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
+                foreach (var post in json["data"])
+                {
+                    feed.Add((string)post["id"]);
+                }
+            }
+            
 			return feed;
 		}
+
+        public static List<string> GetCommentPost(string post_id, int limit_num = 1000, int time_sleep = 1000)
+        {
+            List<string> commentAll = new List<string>();
+            List<string> comment = new List<string>();
+            string token         = GetUserAccessToken(APP_ID, APP_SECRET);
+            string template_url = "https://graph.facebook.com/" + post_id + "/comments";
+            // param of api
+            string url_post = template_url + "?limit=" +limit_num;
+            url_post = url_post + "&access_token=" + token;
+            string result = NetUtils.Get(url_post);
+            var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
+            //check luc nao json["paging"]["after"] ko ton tai, hoac null thi ngat while
+            // tat ca? don vao commentAll.
+            //do {
+
+            //}
+            //while(json["paging"]["after"] )
+            foreach (var post in json["data"])
+            {
+                comment.Add((string)post["message"]);
+            }
+            Thread.Sleep(time_sleep);
+
+            return comment;
+        }
 
 	}
 }

@@ -35,67 +35,55 @@ namespace FaBoApp
                 btnStart.Enabled = true;
                 return;
             }
-            //var thread = new Thread(() => {
-            //    List<string> postIds = new List<string>();
-            //    int year_num = 2012;
-
-            //    while (year_num < 2017)
-            //    {
-            //        string start_year = year_num.ToString() + "-01-01";
-            //        string end_year = (year_num + 1).ToString() + "-01-01";
-
-            //        List<string> tmpList;
-            //        int offset_current = 0;
-            //        do {
-            //            tmpList = FBUtils.GetFanpageFeed(input, start_year, end_year, 100, offset_current);
-            //            if (offset_current == 0 && (tmpList == null || tmpList.All(x => string.IsNullOrWhiteSpace(x))))
-            //            {
-            //                break;
-            //            }
-            //            postIds.AddRange(tmpList);
-            //            offset_current = offset_current + 100;
-            //            Thread.Sleep(1000);
-            //        } while (tmpList.Count() != 0);
-
-            //        year_num = year_num + 1;
-
-            //    }
-            //    foreach (var postId in postIds)
-            //    {
-            //        this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postId);
-            //    }
-            //    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postIds.Count.ToString());
-
-            //    /*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
-            //    string name_fanpage = textBox1.Text;
-            //    string info = FBUtils.GetFanpageInfo(name_fanpage);
-            //    dynamic jsonInfo = JsonConvert.DeserializeObject(info);
-            //    Console.WriteLine("jsonInfo = " + info);*/
-            //    if (btnStart.InvokeRequired)
-            //    {
-            //        btnStart.Invoke(new MethodInvoker(delegate {
-            //            btnStart.Enabled = true;
-            //            btnStart.Text = "Start";
-            //        }));
-            //    }
-            //});
-            //thread.Start();
-
             var thread = new Thread(() =>
             {
+                List<string> postIds = new List<string>();
                 List<string> commentPost = new List<string>();
-                commentPost = FBUtils.GetCommentPost(input);
-                foreach (var message in commentPost)
+                List<string> emails = new List<string>();
+                int year_num = 2012;
+
+                while (year_num < 2017)
                 {
-                    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), message);
-                    List<string> emailExtract = ContentUtils.ExtractEmails(message);
-                    foreach (var email in emailExtract)
+                    string start_year = year_num.ToString() + "-01-01";
+                    string end_year = (year_num + 1).ToString() + "-01-01";
+
+                    List<string> tmpList;
+                    int offset_current = 0;
+                    do
                     {
-                        this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), "là:"+email);
+                        tmpList = FBUtils.GetFanpageFeed(input, start_year, end_year, 100, offset_current);
+                        if (offset_current == 0 && (tmpList == null || tmpList.All(x => string.IsNullOrWhiteSpace(x))))
+                        {
+                            break;
+                        }
+                        postIds.AddRange(tmpList);
+                        offset_current = offset_current + 100;
+                        Thread.Sleep(1000);
+                    } while (tmpList.Count() != 0);
+
+                    year_num = year_num + 1;
+
+                }
+                
+                foreach (var postId in postIds)
+                {
+                    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postId);
+                    commentPost = FBUtils.GetCommentPost(postId);
+                    foreach (var message in commentPost)
+                    {
+                        List<string> emailExtract = ContentUtils.ExtractEmails(message);
+                        foreach (var email in emailExtract)
+                        {
+                            emails.Add(email);
+                        }
                     }
                 }
-                this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), commentPost.Count.ToString());
-
+                this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postIds.Count.ToString());
+                foreach (var email in emails)
+                {
+                    this.Invoke(new Action<string>((value) => listViewEmail.Items.Add(value)), email);
+                }
+                this.Invoke(new Action<string>((value) => listViewEmail.Items.Add(value)), emails.Count.ToString());
                 /*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
                 string name_fanpage = textBox1.Text;
                 string info = FBUtils.GetFanpageInfo(name_fanpage);
@@ -111,6 +99,37 @@ namespace FaBoApp
                 }
             });
             thread.Start();
+
+            //var thread = new Thread(() =>
+            //{
+            //    List<string> commentPost = new List<string>();
+            //    commentPost = FBUtils.GetCommentPost(input);
+            //    foreach (var message in commentPost)
+            //    {
+            //        this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), message);
+            //        List<string> emailExtract = ContentUtils.ExtractEmails(message);
+            //        foreach (var email in emailExtract)
+            //        {
+            //            this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), "là:"+email);
+            //        }
+            //    }
+            //    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), commentPost.Count.ToString());
+
+            //    /*GetAccessTokenFromCode("851310914988555", "7ae8be1bd8f67826a3e654c6de3809a5", "https%3A%2F%2Fwww.smobgame.com");
+            //    string name_fanpage = textBox1.Text;
+            //    string info = FBUtils.GetFanpageInfo(name_fanpage);
+            //    dynamic jsonInfo = JsonConvert.DeserializeObject(info);
+            //    Console.WriteLine("jsonInfo = " + info);*/
+            //    if (btnStart.InvokeRequired)
+            //    {
+            //        btnStart.Invoke(new MethodInvoker(delegate
+            //        {
+            //            btnStart.Enabled = true;
+            //            btnStart.Text = "Start";
+            //        }));
+            //    }
+            //});
+            //thread.Start();
             //268192336643737
 
 		}

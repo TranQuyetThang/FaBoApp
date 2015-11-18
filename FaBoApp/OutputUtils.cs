@@ -7,5 +7,6 @@ namespace FaBoApp
 {
     class OutputUtils
     {
+
     }
 }

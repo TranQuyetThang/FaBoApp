@@ -97,24 +97,94 @@ namespace FaBoApp
             string token         = GetUserAccessToken(APP_ID, APP_SECRET);
             string template_url = "https://graph.facebook.com/" + post_id + "/comments";
             // param of api
-            string url_post = template_url + "?limit=" +limit_num;
-            url_post = url_post + "&access_token=" + token;
-            string result = NetUtils.Get(url_post);
-            var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
-            //check luc nao json["paging"]["after"] ko ton tai, hoac null thi ngat while
-            // tat ca? don vao commentAll.
-            //do {
-
-            //}
-            //while(json["paging"]["after"] )
-            foreach (var post in json["data"])
+            
+            
+            //string result = NetUtils.Get(url_post);
+            string result = null;
+            Comment comment1 = new Comment();
+            //Comment comment1 = JsonConvert.DeserializeObject<Comment>(result);
+            do
             {
-                comment.Add((string)post["message"]);
+                string url_post = null;
+                string after = null;
+                if(comment1 != null && comment1.pagingObj != null && comment1.pagingObj.cursors != null && comment1.pagingObj.cursors.after != null)
+                {
+                    after = comment1.pagingObj.cursors.after;
+                }
+                url_post = template_url + "?limit=" + limit_num;
+                if (after != null)
+                    url_post = url_post + "&after=" + after;
+                url_post = url_post + "&access_token=" + token;
+                result = NetUtils.Get(url_post);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    comment1 = JsonConvert.DeserializeObject<Comment>(result);
+                    foreach (DataObj dataObj in comment1.dataObj)
+                    {
+                        comment.Add(dataObj.message);
+                    }
+                }
+
             }
+            while (comment1 != null && comment1.pagingObj != null && comment1.pagingObj.cursors != null && comment1.pagingObj.cursors.after != null);
             Thread.Sleep(time_sleep);
 
             return comment;
         }
+
+        public class Comment
+        {
+            /// <summary>
+            /// A User's username. eg: "sergiotapia, mrkibbles, matumbo"
+            /// </summary>
+            [JsonProperty("data")]
+            public List<DataObj> dataObj { get; set; }
+
+            /// <summary>
+            /// A User's name. eg: "Sergio Tapia, John Cosack, Lucy McMillan"
+            /// </summary>
+            [JsonProperty("paging")]
+            public PagingObj pagingObj { get; set; }
+        }
+
+        public class DataObj
+        {
+            [JsonProperty("created_time")]
+            public DateTime created_time { get; set; }
+            [JsonProperty("from")]
+            public FromObj fromObj { get; set; }
+            [JsonProperty("message")]
+            public string message { get; set; }
+            [JsonProperty("id")]
+            public string id { get; set; }
+        }
+        
+        public class FromObj
+        {
+            [JsonProperty("name")]
+            public string name { get; set; }
+            [JsonProperty("id")]
+            public string id { get; set; }
+        }
+
+        public class PagingObj
+        {
+            [JsonProperty("cursors")]
+            public CursorsObj cursors { get; set; }
+            [JsonProperty("next")]
+            public string next { get; set; }
+            [JsonProperty("previous")]
+            public string previous { get; set; }
+        }
+
+        public class CursorsObj
+        {
+            [JsonProperty("before")]
+            public string before { get; set; }
+            [JsonProperty("after")]
+            public string after { get; set; }
+        }
+
 
 	}
 }

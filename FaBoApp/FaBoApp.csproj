@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentUtils.cs" />
     <Compile Include="FacebookLoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

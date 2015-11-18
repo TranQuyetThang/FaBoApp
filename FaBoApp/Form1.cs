@@ -85,9 +85,14 @@ namespace FaBoApp
             {
                 List<string> commentPost = new List<string>();
                 commentPost = FBUtils.GetCommentPost(input);
-                foreach (var postId in commentPost)
+                foreach (var message in commentPost)
                 {
-                    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), postId);
+                    this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), message);
+                    List<string> emailExtract = ContentUtils.ExtractEmails(message);
+                    foreach (var email in emailExtract)
+                    {
+                        this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), "là:"+email);
+                    }
                 }
                 this.Invoke(new Action<string>((value) => listViewPosts.Items.Add(value)), commentPost.Count.ToString());
 

@@ -35,9 +35,9 @@
 			this.listViewPosts = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.listViewEmails = new System.Windows.Forms.ListView();
+			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.lblCountPosts = new System.Windows.Forms.Label();
 			this.lblCountEmails = new System.Windows.Forms.Label();
-			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.SuspendLayout();
 			// 
 			// btnStart
@@ -45,7 +45,7 @@
 			this.btnStart.Location = new System.Drawing.Point(292, 4);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
-			this.btnStart.TabIndex = 0;
+			this.btnStart.TabIndex = 1;
 			this.btnStart.Text = "Start";
 			this.btnStart.UseVisualStyleBackColor = true;
 			this.btnStart.Click += new System.EventHandler(this.button1_Click);
@@ -64,7 +64,7 @@
 			this.textBox1.Location = new System.Drawing.Point(86, 6);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(200, 20);
-			this.textBox1.TabIndex = 2;
+			this.textBox1.TabIndex = 0;
 			// 
 			// label2
 			// 
@@ -85,6 +85,7 @@
 			this.listViewPosts.TabIndex = 4;
 			this.listViewPosts.UseCompatibleStateImageBehavior = false;
 			this.listViewPosts.View = System.Windows.Forms.View.Details;
+			this.listViewPosts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_KeyDown);
 			// 
 			// columnHeader1
 			// 
@@ -101,6 +102,11 @@
 			this.listViewEmails.TabIndex = 5;
 			this.listViewEmails.UseCompatibleStateImageBehavior = false;
 			this.listViewEmails.View = System.Windows.Forms.View.Details;
+			this.listViewEmails.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_KeyDown);
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Width = 270;
 			// 
 			// lblCountPosts
 			// 
@@ -120,12 +126,9 @@
 			this.lblCountEmails.TabIndex = 7;
 			this.lblCountEmails.Text = "Count: --";
 			// 
-			// columnHeader2
-			// 
-			this.columnHeader2.Width = 270;
-			// 
 			// Form1
 			// 
+			this.AcceptButton = this.btnStart;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(634, 461);
@@ -137,6 +140,9 @@
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnStart);
+			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(650, 500);
+			this.MinimumSize = new System.Drawing.Size(650, 500);
 			this.Name = "Form1";
 			this.ResumeLayout(false);
 			this.PerformLayout();

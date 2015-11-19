@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
-using System.Text;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -142,6 +141,32 @@ namespace FaBoApp
 		private void listViewPosts_Resize(object sender, EventArgs e)
 		{
 			listViewPosts.Columns[0].Width = listViewPosts.Width;
+		}
+
+		private void listView_KeyDown(object sender, KeyEventArgs e)
+		{
+			ListView listView = sender as ListView;
+			if (listView != null) {
+				switch (e.KeyData) { 
+					case (Keys.A | Keys.Control):
+						listView.MultiSelect = true;
+						foreach (ListViewItem item in listView.Items) {
+							item.Selected = true;
+						}
+						break;
+					case (Keys.C | Keys.Control):
+						string clipboard = "";
+						foreach (ListViewItem item in listView.Items) {
+							if (item.Selected) {
+								clipboard += item.Text + "\n";
+							}
+						}
+						if (!String.IsNullOrWhiteSpace(clipboard)) {
+							System.Windows.Forms.Clipboard.SetText(clipboard);
+						}						
+						break;
+				}
+			}
 		}
 
 	}

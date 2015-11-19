@@ -13,8 +13,10 @@ namespace FaBoApp
 {
 	class FBUtils
 	{
-		private const string APP_ID = "851310914988555";
-		private const string APP_SECRET = "7ae8be1bd8f67826a3e654c6de3809a5";
+		//private const string APP_ID = "851310914988555";
+		//private const string APP_SECRET = "7ae8be1bd8f67826a3e654c6de3809a5";
+		private const string APP_ID = "1658931291050872";
+		private const string APP_SECRET = "394b273408aaa39e9910046faf5610c2";
 		private static string USER_TOKEN;
 		private static string APP_TOKEN;
 

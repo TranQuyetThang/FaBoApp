@@ -65,6 +65,37 @@ namespace FaBoApp
 			return NetUtils.Get(url);
 		}
 
+        public static void GetAllFanpage(ref List<string> feedList, ref List<string> feedContent, string fanpageName, string since_year = null, string until_year = null, int offset = 0, int limit = 100)
+        {
+            if (feedList != null)
+            {
+                feedList = new List<string>();
+            }
+            if (feedContent != null)
+            {
+                feedContent = new List<string>();
+            }
+            string token = GetAppAccessToken(APP_ID, APP_SECRET);
+            string url_page = "https://graph.facebook.com/" + fanpageName + "/feed?access_token=" + token;
+            // param of api
+            if (!String.IsNullOrWhiteSpace(since_year))
+                url_page += "&since=" + since_year;
+            if (!String.IsNullOrWhiteSpace(until_year))
+                url_page += "&until=" + until_year;
+            url_page += "&offset=" + offset + "&limit=" + limit;
+
+            string result = NetUtils.Get(url_page);
+            if (!string.IsNullOrEmpty(result))
+            {
+                var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
+                foreach (var post in json["data"])
+                {
+                    feedList.Add((string)post["id"]);
+                    feedContent.Add((string)post["message"]);
+                }
+            }
+        }
+
 		public static List<string> GetFanpageFeed(string fanpageName, string since_year = null, string until_year = null, int offset = 0, int limit = 100)
 		{
 			List<string> feed = new List<string>();
@@ -143,6 +174,12 @@ namespace FaBoApp
 
 		//	return comment;
 		//}
+
+        public class MyTwoLists
+        {
+            public List<String> ListOne { get; set; }
+            public List<String> ListTwo { get; set; }
+        }
 
 		public class Comment
 		{

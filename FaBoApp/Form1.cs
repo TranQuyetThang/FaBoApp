@@ -24,7 +24,7 @@ namespace FaBoApp
 		{
 			string email = FBUtils.LoginAndGetUserEmail();
 			if (String.IsNullOrWhiteSpace(email) || !IsAuthenticatedEmail(email)) {
-				MessageBox.Show("Ra chỗ khác chơi!!!");
+				MessageBox.Show("Email không hợp lệ. Ra chỗ khác chơi!!!");
 				Environment.Exit(0);
 			}
 			InitializeComponent();
@@ -257,6 +257,18 @@ namespace FaBoApp
 			} catch { }
 
 			return emails.Contains(email);
+		}
+
+		private void tabControl_TabIndexChanged(object sender, EventArgs e)
+		{
+			switch (tabControl.SelectedIndex) {
+				case 0:
+					AcceptButton = btnStartFanpage;
+					break;
+				case 1:
+					AcceptButton = btnStartPost;
+					break;
+			}
 		}
 
 	}

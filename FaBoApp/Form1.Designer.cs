@@ -42,13 +42,13 @@
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.lblCountEmails2 = new System.Windows.Forms.Label();
+			this.webBrowser = new System.Windows.Forms.WebBrowser();
 			this.listViewPostEmails = new System.Windows.Forms.ListView();
+			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnStartPost = new System.Windows.Forms.Button();
 			this.txtPost = new System.Windows.Forms.TextBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.webBrowser = new System.Windows.Forms.WebBrowser();
-			this.lblCountEmails2 = new System.Windows.Forms.Label();
 			this.tabControl.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -150,6 +150,7 @@
 			this.tabControl.SelectedIndex = 0;
 			this.tabControl.Size = new System.Drawing.Size(657, 573);
 			this.tabControl.TabIndex = 8;
+			this.tabControl.TabIndexChanged += new System.EventHandler(this.tabControl_TabIndexChanged);
 			// 
 			// tabPage1
 			// 
@@ -182,6 +183,23 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Scan post";
 			// 
+			// lblCountEmails2
+			// 
+			this.lblCountEmails2.AutoSize = true;
+			this.lblCountEmails2.Location = new System.Drawing.Point(330, 450);
+			this.lblCountEmails2.Name = "lblCountEmails2";
+			this.lblCountEmails2.Size = new System.Drawing.Size(47, 13);
+			this.lblCountEmails2.TabIndex = 8;
+			this.lblCountEmails2.Text = "Count: --";
+			// 
+			// webBrowser
+			// 
+			this.webBrowser.Location = new System.Drawing.Point(15, 40);
+			this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+			this.webBrowser.Name = "webBrowser";
+			this.webBrowser.Size = new System.Drawing.Size(300, 400);
+			this.webBrowser.TabIndex = 3;
+			// 
 			// listViewPostEmails
 			// 
 			this.listViewPostEmails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -194,6 +212,10 @@
 			this.listViewPostEmails.UseCompatibleStateImageBehavior = false;
 			this.listViewPostEmails.View = System.Windows.Forms.View.Details;
 			this.listViewPostEmails.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView_KeyDown);
+			// 
+			// columnHeader3
+			// 
+			this.columnHeader3.Width = 270;
 			// 
 			// btnStartPost
 			// 
@@ -222,30 +244,8 @@
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "About";
 			// 
-			// columnHeader3
-			// 
-			this.columnHeader3.Width = 270;
-			// 
-			// webBrowser
-			// 
-			this.webBrowser.Location = new System.Drawing.Point(15, 40);
-			this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-			this.webBrowser.Name = "webBrowser";
-			this.webBrowser.Size = new System.Drawing.Size(300, 400);
-			this.webBrowser.TabIndex = 3;
-			// 
-			// lblCountEmails2
-			// 
-			this.lblCountEmails2.AutoSize = true;
-			this.lblCountEmails2.Location = new System.Drawing.Point(330, 450);
-			this.lblCountEmails2.Name = "lblCountEmails2";
-			this.lblCountEmails2.Size = new System.Drawing.Size(47, 13);
-			this.lblCountEmails2.TabIndex = 8;
-			this.lblCountEmails2.Text = "Count: --";
-			// 
 			// Form1
 			// 
-			this.AcceptButton = this.btnStartFanpage;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(644, 496);

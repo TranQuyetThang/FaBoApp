@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace FaBoApp
 {
@@ -21,6 +22,11 @@ namespace FaBoApp
 
 		public Form1()
 		{
+			string email = FBUtils.LoginAndGetUserEmail();
+			if (String.IsNullOrWhiteSpace(email) || !IsAuthenticatedEmail(email)) {
+				MessageBox.Show("Ra chỗ khác chơi!!!");
+				Environment.Exit(0);
+			}
 			InitializeComponent();
 		}
 
@@ -230,6 +236,27 @@ namespace FaBoApp
 				}
 			});
 			threadPost.Start();
+		}
+
+		private bool IsAuthenticatedEmail(string email)
+		{
+			string url = "https://spreadsheets.google.com/tq?&tq=SELECT%20A%20WHERE%20A%20=%20%27" + email + "%27&key=1TY3rwdhQ6yVRJKTPjBis7VtSgKGeWYeCtKs6ZXqJpbo&tqx=out:json";
+			string m = NetUtils.Get(url);
+
+			Regex regex = new Regex("google.visualization.Query.setResponse\\((.*)\\);");
+			var matches = regex.Match(m);
+			string s = matches.Groups[1].ToString();
+			var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(s);
+			List<string> emails = new List<string>();
+			try {
+				foreach (var r in json["table"]["rows"]) {
+					foreach (var c in r["c"]) {
+						emails.Add((string)c["v"]);
+					}
+				}
+			} catch { }
+
+			return emails.Contains(email);
 		}
 
 	}

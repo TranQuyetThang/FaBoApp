@@ -18,7 +18,7 @@ namespace FaBoApp
 		// 224747490983307_380084585449596
 
 		private static string[] APP_IDS = new string[] {
-			"851310914988555",
+			//"851310914988555",
 			"1658931291050872",
 			"104851996549320",
 			"924850577567984",
@@ -26,7 +26,6 @@ namespace FaBoApp
 			"924373020976852"
 		};
 		private static string[] APP_SECRETS = new string[] {
-			"7ae8be1bd8f67826a3e654c6de3809a5",
 			"394b273408aaa39e9910046faf5610c2",
 			"a7a25a24549ab8b8011bbef80e62edfc",
 			"8c3cfb4d43d6c5a948ad8972684e87ba",
@@ -37,10 +36,10 @@ namespace FaBoApp
 
 		private static string USER_TOKEN;
 
-		private static string GetUserAccessToken(string appId, string appSecret)
+		private static string GetUserAccessToken(string appId, string scope = null)
 		{
 			if (!IsValidUserAccessToken(USER_TOKEN)) {
-				FacebookLoginForm form = new FacebookLoginForm(appId);
+				FacebookLoginForm form = new FacebookLoginForm(appId, scope);
 				form.ShowDialog();
 				USER_TOKEN = form.UserAccessToken;
 			}
@@ -170,6 +169,20 @@ namespace FaBoApp
 			//return new Uri("https://mobile.facebook.com/" + id);
 		}
 
+		public static string LoginAndGetUserEmail() {
+			string token = GetUserAccessToken("851310914988555", "email");
+			string url_api = "https://graph.facebook.com/me?fields=email&access_token=" + token;
+
+			string result = NetUtils.Get(url_api);
+			try {
+				var json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result);
+				string email = json["email"];
+				return email;
+			} catch {
+				return null;
+			}
+		}
+
 		//public void abc() {
 		//List<string> commentAll = new List<string>();
 		//	List<string> comment = new List<string>();
@@ -206,66 +219,6 @@ namespace FaBoApp
 
 		//	return comment;
 		//}
-
-		public class MyTwoLists
-		{
-			public List<String> ListOne { get; set; }
-			public List<String> ListTwo { get; set; }
-		}
-
-		public class Comment
-		{
-			/// <summary>
-			/// A User's username. eg: "sergiotapia, mrkibbles, matumbo"
-			/// </summary>
-			[JsonProperty("data")]
-			public List<DataObj> dataObj { get; set; }
-
-			/// <summary>
-			/// A User's name. eg: "Sergio Tapia, John Cosack, Lucy McMillan"
-			/// </summary>
-			[JsonProperty("paging")]
-			public PagingObj pagingObj { get; set; }
-		}
-
-		public class DataObj
-		{
-			[JsonProperty("created_time")]
-			public DateTime created_time { get; set; }
-			[JsonProperty("from")]
-			public FromObj fromObj { get; set; }
-			[JsonProperty("message")]
-			public string message { get; set; }
-			[JsonProperty("id")]
-			public string id { get; set; }
-		}
-
-		public class FromObj
-		{
-			[JsonProperty("name")]
-			public string name { get; set; }
-			[JsonProperty("id")]
-			public string id { get; set; }
-		}
-
-		public class PagingObj
-		{
-			[JsonProperty("cursors")]
-			public CursorsObj cursors { get; set; }
-			[JsonProperty("next")]
-			public string next { get; set; }
-			[JsonProperty("previous")]
-			public string previous { get; set; }
-		}
-
-		public class CursorsObj
-		{
-			[JsonProperty("before")]
-			public string before { get; set; }
-			[JsonProperty("after")]
-			public string after { get; set; }
-		}
-
 
 	}
 }

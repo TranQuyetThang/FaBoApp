@@ -49,9 +49,11 @@
 			this.btnStartPost = new System.Windows.Forms.Button();
 			this.txtPost = new System.Windows.Forms.TextBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.txtAbout = new System.Windows.Forms.RichTextBox();
 			this.tabControl.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
+			this.tabPage3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btnStartFanpage
@@ -237,12 +239,24 @@
 			// tabPage3
 			// 
 			this.tabPage3.BackColor = System.Drawing.Color.Transparent;
+			this.tabPage3.Controls.Add(this.txtAbout);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage3.Size = new System.Drawing.Size(649, 547);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "About";
+			// 
+			// txtAbout
+			// 
+			this.txtAbout.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtAbout.Enabled = false;
+			this.txtAbout.Location = new System.Drawing.Point(15, 10);
+			this.txtAbout.Name = "txtAbout";
+			this.txtAbout.Size = new System.Drawing.Size(615, 450);
+			this.txtAbout.TabIndex = 0;
+			this.txtAbout.Text = "Version: 1.0.0\nMọi tâm tư tình cảm, đóng góp, báo lỗi xin liên hệ:\nthangtran@mobg" +
+    "ame.vn hoặc duy@mobgame.vn\n\n";
 			// 
 			// Form1
 			// 
@@ -263,6 +277,7 @@
 			this.tabPage1.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
+			this.tabPage3.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -290,6 +305,7 @@
 		private System.Windows.Forms.WebBrowser webBrowser;
 		private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.Label lblCountEmails2;
+		private System.Windows.Forms.RichTextBox txtAbout;
     }
 }
 

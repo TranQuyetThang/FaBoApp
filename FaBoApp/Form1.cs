@@ -271,5 +271,10 @@ namespace FaBoApp
 			}
 		}
 
+        private void txtAbout_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
 	}
 }

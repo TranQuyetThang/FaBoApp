@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="MobgameTool" Language="1033" Version="1.0.0.0" Manufacturer="MobTeam" UpgradeCode="7fcd50e1-3df5-4561-b1d9-3b328ba0247e">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<Media Id="1" Cabinet="Cab1.cab" EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="MobgameTool" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="App_Desktop_Shortcut"/>
+      <ComponentRef Id="App_Start_Menu_Shortcut"/>
+		</Feature>
+	</Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="MobgameTool" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"> </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="MobgameTool" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<Component Id="ProductComponent">
+        <File Source="$(var.FaBoApp.TargetPath)" />
+      </Component>
+		  <Component Id="txtFile_Component" Guid="6C5141BA-C872-4F60-987F-B2139F445051">
+       <File Id="txtFile_File" Source="E:\appvs\install_file\Newtonsoft.Json.dll" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+  
+  <Fragment>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="App_Desktop_Shortcut" Guid="D7B23262-36D0-4D9C-8FDE-69B318EA7A84">
+        <Shortcut Id="ApplicationDesktopShortcut"
+           Name="FaBoApp"
+           Target="[INSTALLFOLDER]FaBoApp.exe"
+           WorkingDirectory="INSTALLFOLDER" Icon="handIcon1">
+          <Icon Id="handIcon1" SourceFile="E:\appvs\install_file\Logo-Mob-01.ico"/>
+        </Shortcut>
+        <RemoveFolder Id="RemoveDesktopFolder"
+            Directory="DesktopFolder"
+            On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\FaBoApp"
+            Name="installed" Type="integer"
+            Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="App_Start_Menu_Shortcut" Guid="7488D694-84B2-403F-8B44-606817C62BE0">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+           Name="FaBoApp"
+           Description="FaBoApp - Application with facebook."
+           Target="[INSTALLFOLDER]FaBoApp.exe"
+           WorkingDirectory="INSTALLFOLDER" Icon="handIcon2">
+          <Icon Id="handIcon2" SourceFile="E:\appvs\install_file\Logo-Mob-01.ico"/>
+        </Shortcut>
+        <RemoveFolder Id="RemoveApplicationProgramsFolder"
+            Directory="ApplicationProgramsFolder"
+            On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\FaBoApp"
+            Name="installed" Type="integer"
+            Value="1" KeyPath="yes" />
+
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
+</Wix>
